@@ -1,0 +1,33 @@
+/* src/styles/InventoryForm.css */
+.form-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+ .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

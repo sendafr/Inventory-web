@@ -1,0 +1,142 @@
+/* ExcelSheet.css */
+/*.rdg {
+  --rdg-border-color: #d1d5db;
+  --rdg-header-background-color: #f9fafb;
+  --rdg-row-hover-background-color: #f3f4f6;
+  --rdg-selected-background-color: #dbeafe;
+  --rdg-background-color: #ffffff;
+  --rdg-color: #111827;
+  --rdg-font-size: 14px;
+  --rdg-row-height: 32px;
+  --rdg-header-row-height: 40px;
+  background-color: var(--rdg-background-color);
+  color: var(--rdg-color);
+  font-size: var(--rdg-font-size);
+}*/
+.rdg {
+  --rdg-border-color: #d1d5db;
+  --rdg-header-background-color: #f9fafb;
+  --rdg-row-hover-background-color: #f3f4f6;
+  --rdg-selected-background-color: #dbeafe;
+  --rdg-background-color: #ffffff;
+  --rdg-color: #111827;
+  --rdg-font-size: 14px;
+  --rdg-row-height: 32px;
+  --rdg-header-row-height: 40px;
+  
+  display: grid;
+  grid-template-columns: repeat(var(--rdg-columns, 9), minmax(80px, 1fr));
+  grid-auto-rows: var(--rdg-row-height);
+  height: 100%;
+  width: 100%;
+  border: 1px solid var(--rdg-border-color);
+  background: var(--rdg-background-color);
+  color: var(--rdg-color);
+  font-size: var(--rdg-font-size);
+  overflow: auto;
+}
+
+.rdg-header-row,
+.rdg-row {
+  display: contents;
+}
+
+.rdg-header-cell,
+.rdg-cell {
+  border-right: 1px solid var(--rdg-border-color);
+  border-bottom: 1px solid var(--rdg-border-color);
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.rdg-header-row {
+  background: var(--rdg-header-background-color);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.rdg-cell[aria-selected="true"] {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+.rdg-row:hover .rdg-cell {
+  background: var(--rdg-row-hover-background-color);
+}
+/* Grid lines */
+.rdg-cell {
+  border-right: 1px solid var(--rdg-border-color);
+  border-bottom: 1px solid var(--rdg-border-color);
+}
+
+/* Header */
+.rdg-header-row {
+  background-color: var(--rdg-header-background-color);
+  border-bottom: 2px solid var(--rdg-border-color);
+  font-weight: 600;
+}
+
+
+/* Hover */
+.rdg-row:hover .rdg-cell {
+  background-color: var(--rdg-row-hover-background-color);
+}
+
+.rdg {
+  display: grid;
+  grid-auto-rows: 32px;
+  grid-template-columns: repeat(var(--rdg-columns, 9), minmax(80px, 1fr));
+  height: 100%;
+  width: 100%;
+  border: 1px solid #d1d5db;
+  overflow: auto;
+}
+
+.rdg-header-row,
+.rdg-row {
+  display: contents;
+}
+
+.rdg-header-cell,
+.rdg-cell {
+  border-right: 1px solid #d1d5db;
+  border-bottom: 1px solid #d1d5db;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  min-width: 0;
+}
+
+.rdg-header-row {
+  background: #f9fafb;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.rdg-row:hover .rdg-cell {
+  background: #f3f4f6;
+}
+/* Selected cell */
+.rdg-cell[aria-selected="true"] {
+  background-color: var(--rdg-selected-background-color);
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+/* Make sure grid fills container */
+.rdg {
+  height: 100%;
+  width: 100%;
+}
+
+/* Fix scrollbar alignment */
+.rdg-scroll-container {
+  overflow: auto;
+}

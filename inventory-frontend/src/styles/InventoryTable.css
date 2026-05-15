@@ -1,0 +1,108 @@
+/* src/components/InventoryTable.css */
+.table-wrapper {
+  background: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background: var(--gray-100);
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  padding: 0.75rem;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 14px;
+}
+
+.table tbody tr:hover {
+  background: var(--gray-50);
+}
+
+.table-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--gray-500);
+}
+
+.badge-low {
+  color: var(--danger);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.badge-ok {
+  color: var(--success);
+  font-size: 13px;
+}
+
+.font-mono {
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.action-link {
+  background: none;
+  border: none;
+  font-size: 13px;
+  padding: 0;
+}
+
+.action-link.edit {
+  color: var(--primary);
+}
+
+.action-link.delete {
+  color: var(--danger);
+}
+
+.action-link:hover {
+  text-decoration: underline;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-top: 1px solid var(--gray-200);
+  font-size: 14px;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pagination-btn {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: var(--gray-50);
+}
+
+@media (max-width: 768px) {
+  .table-wrapper { overflow-x: auto; }
+  .table { min-width: 700px; }
+}
