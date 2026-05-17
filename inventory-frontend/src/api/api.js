@@ -1,6 +1,5 @@
 import axios, { toFormData } from 'axios';
 
-
 // Base URL for your Django backend
 const BASE_URL = 'http://localhost:8000/api';
 
@@ -92,7 +91,6 @@ const authAPI = {
   },
 
   logout: async () => {
-    // ✅ FIX: Correct key name
     const refreshToken = localStorage.getItem('refresh_token');
     if (refreshToken) {
       try {
@@ -168,14 +166,12 @@ const userAPI = {
   },
 };
 
+// Inventory API
 const inventoryAPI = {
-  // ✅ FIX: Handle both query strings (from Home.jsx) and objects
   getAll: async (filters = {}) => {
-    // If filters is a string (query params), append it directly
     if (typeof filters === 'string') {
       return api.get(`/item_list/?${filters}`);
     }
-    // If filters is an object, let axios handle it as params
     return api.get('/item_list/', { params: filters });
   },
 
@@ -206,7 +202,51 @@ const inventoryAPI = {
   importExcel: (formData) => api.post('/inventory_bulk_update/', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   })
-  
+};
+
+// --- New Budget API (Budget & Todo) ---
+const budgetAPI = {
+  // Budget Endpoints
+  getBudgets: async () => {
+    const response = await api.get('/budget_list/');
+    return response.data;
+  },
+
+  createBudget: async (budgetData) => {
+    const response = await api.post('/budget_create/', budgetData);
+    return response.data;
+  },
+
+  updateBudget: async (id, budgetData) => {
+    const response = await api.put(`/budget_detail/${id}/`, budgetData);
+    return response.data;
+  },
+
+  deleteBudget: async (id) => {
+    const response = await api.delete(`/budget_detail/${id}/`);
+    return response.data;
+  },
+
+  // Todo Endpoints
+  getTodos: async () => {
+    const response = await api.get('/get_todo/');
+    return response.data;
+  },
+
+  createTodo: async (todoData) => {
+    const response = await api.post('/todo_create/', todoData);
+    return response.data;
+  },
+
+  updateTodo: async (id, todoData) => {
+    const response = await api.put(`/todo_detail/${id}/`, todoData);
+    return response.data;
+  },
+
+  deleteTodo: async (id) => {
+    const response = await api.delete(`/delete_todo/${id}/`);
+    return response.data;
+  },
 };
 
 // Export at the end
@@ -214,5 +254,6 @@ export {
   authAPI,
   userAPI,
   inventoryAPI,
+  budgetAPI, // <--- Add this
   BASE_URL,
 };

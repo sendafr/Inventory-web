@@ -5,6 +5,8 @@ import ExcelSheet from '../components/ExcelSheet'
 import InventoryForm from '../components/InventoryForm'
 import { inventoryAPI } from '../api/api'
 import { exportToExcel } from '../utils/exportExcel'
+import BudgetPage from '../components/Budget'
+import Persional_acc from '../components/Persional_acc'
 
  
 const PAGE_SIZE = 20

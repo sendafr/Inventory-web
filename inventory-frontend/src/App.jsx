@@ -9,6 +9,8 @@ import InventoryForm from "./components/InventoryForm";
 import InventoryTable from "./components/InventoryTable";
 import Profile from "./pages/Profile.jsx";
 import ExcelSheet from "./components/ExcelSheet.jsx";
+import BudgetPage from "./components/Budget.jsx";
+import Persional_acc from "./components/Persional_acc.jsx";
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -91,8 +93,28 @@ function App() {
             </ProtectedRoute>
           }
         />
-      
-
+        {/* Budget Page Management */}
+        <Route
+          path="/budget"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <BudgetPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        {/* Personal Accounting */}
+        <Route
+          path="/persional_acc"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Persional_acc />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
         {/* Catch all - redirect to home or login */}
         <Route 
           path="*" 

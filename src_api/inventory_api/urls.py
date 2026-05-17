@@ -21,4 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('records.urls')),
     path('api/auth/', include('users.urls')),
+    path('api/', include('persio_acc.urls')),
+    path('api/', include('to_dos.urls')),
+    path('api/', include('budgets.urls')),
 ]

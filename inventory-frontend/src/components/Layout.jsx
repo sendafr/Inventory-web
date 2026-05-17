@@ -34,6 +34,12 @@ function Layout({ children }) {
                 Home
               </Link>
             </li>
+           
+            <li className="nav-item">
+              <Link to="/persional_acc" className="nav-link">
+                Personal Accounting
+              </Link>
+            </li>
 
             {isAuthenticated && (
               <>
@@ -97,8 +103,8 @@ function Layout({ children }) {
 
                 {/* Media */}
                 <li className="nav-item">
-                  <Link to="/inventoryForm" className="nav-link">
-                    📁 INVENTORYfORM
+                  <Link to="/budget" className="nav-link">
+                    📁 BUDGET FORM
                   </Link>
                 </li>
 
