@@ -4,7 +4,7 @@ from .models import Category, InventoryItem
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    item_count = serializers.IntegerField(source='items.count', read_only=True)
+    item_count = serializers.IntegerField(source='inventory_items.count', read_only=True)
     
     class Meta:
         model = Category

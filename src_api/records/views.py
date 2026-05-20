@@ -12,7 +12,7 @@ from django.db.models import Q
 
 from django.db import transaction
 
-from.utils import safe_eval_formula
+from .utils import safe_eval_formula
 
 @api_view(['POST'])
 @permission_classes([AllowAny])  # <--- FIX 1: Allows access without login
@@ -55,7 +55,7 @@ def inventory_bulk_update(request):
                             item[f'{field}_formula'] = None
 
                 # upsert
-                obj, created = Inventory.objects.update_or_create(
+                obj, created = InventoryItem.objects.update_or_create(
                     sku=sku,
                     defaults=item
                 )

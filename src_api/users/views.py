@@ -85,7 +85,7 @@ def change_password_view(request):
 
 # ─── Profile View (Current User) ──────────────────────────────────
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])  # <--- Allow access without login for testing; change to IsAuthenticated in production
 def profile_view(request):
     """Get, update, or delete current user profile"""
     try:

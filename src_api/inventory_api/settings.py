@@ -123,11 +123,11 @@ WSGI_APPLICATION = 'inventory_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'authentic_db'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'sendi@0#*pU7!127'),
-        'HOST': os.environ.get('DB_HOST', 'db'),  # ✅ Use container name
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'NAME': os.environ.get('DB_NAME', default='business_record_db'),
+        'USER': os.environ.get('DB_USER', default='admin'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', default='securepassword'),
+        'HOST': os.environ.get('DB_HOST', default='db'),
+        'PORT': os.environ.get('DB_PORT', default='5432'),
     }
 }
 
