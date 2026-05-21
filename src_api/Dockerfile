@@ -7,12 +7,17 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Stage 2: Runtime
 FROM python:3.11-slim
 WORKDIR /app
+
+# Copy installed packages and binaries from builder
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin/gunicorn /usr/local/bin/gunicorn
+
+# Copy application code
 COPY . .
 
-# Expose port
-EXPOSE 8000
+# Render requires the app to listen on the port specified by the $PORT env var
+# Default to 8000 if $PORT is not set (for local testing), but Render sets it automatically
+ENV PORT=8000
 
-# Run with Gunicorn
-CMD ["gunicorn", "--config", "gunicorn.conf", "--chdir", "/app", "inventory_api.wsgi:application"]
+# Run with Gunicorn, binding to 0.0.0.0 and the dynamic port
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --config gunicorn.conf --chdir /app inventory_api.wsgi:application"]

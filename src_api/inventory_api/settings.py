@@ -118,9 +118,42 @@ WSGI_APPLICATION = 'inventory_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+import os
+from urllib.parse import urlparse
+from django.conf import settings
 
+def get_db_settings():
+    # 1. Try to use the single DATABASE_URL (Render Standard)
+    db_url = os.environ.get('DATABASE_URL')
+    
+    if db_url:
+        parsed = urlparse(db_url)
+        return {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': parsed.path.lstrip('/'),
+                'USER': parsed.username,
+                'PASSWORD': parsed.password,
+                'HOST': parsed.hostname,
+                'PORT': parsed.port or 5432,
+            }
+        }
+    
+    # 2. Fallback to individual variables (Local Dev / Legacy)
+    return {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME', 'business_record_db'),
+            'USER': os.environ.get('DB_USER', 'admin'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', 'securepassword'),
+            'HOST': os.environ.get('DB_HOST', 'db'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+        }
+    }
 
-DATABASES = {
+db_settings = get_db_settings()
+
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('DB_NAME', default='business_record_db'),
@@ -129,7 +162,7 @@ DATABASES = {
         'HOST': os.environ.get('DB_HOST', default='db'),
         'PORT': os.environ.get('DB_PORT', default='5432'),
     }
-}
+}"""
 
 
 
