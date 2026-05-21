@@ -41,7 +41,7 @@ CORS_ALLOWED_ORIGINS = [
     origin.strip()
     for origin in os.getenv(
         'CORS_ALLOWED_ORIGINS',
-        'http://localhost:5173,http://localhost:3000,http://localhost:8080,http://127.0.0.1:3000,http://127.0.0.1:8000,http://127.0.0.1:8080,http://localhost:8080',
+        'http://localhost:5173,http://localhost:3000,http://localhost:8080,http://127.0.0.1:3000,http://127.0.0.1:8000,http://127.0.0.1:8080,http://localhost:8080,https://frontend-u40a.onrender.com',
     ).split(',')
     if origin.strip()
 ]
@@ -78,18 +78,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Vite default
-    "http://localhost:3000",
-    "http://localhost:8080",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:8080",
-    "http://localhost:8080",
-    # Add your production domain
-    # 'https://yourdomain.com',
-]
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],
