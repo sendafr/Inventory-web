@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: business-record-backend
+    env: docker
+    root: src_api
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: DEBUG
+        value: "false"
+      - key: ALLOWED_HOSTS
+        value: "localhost,127.0.0.1,<your-backend>.onrender.com"
+      - key: CORS_ALLOWED_ORIGINS
+        value: "http://localhost:5173,http://localhost:3000,http://localhost:8080,https://<your-frontend>.onrender.com"
+
+  - type: web
+    name: business-record-frontend
+    env: docker
+    root: inventory-frontend
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: VITE_API_URL
+        value: "https://<your-backend>.onrender.com"

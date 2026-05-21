@@ -28,10 +28,23 @@ SECRET_KEY = os.getenv('MY_SECRET_KEY', default='django-insecure-v+k)(_mfq4_&lmh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+    if host.strip()
+]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Allowed frontend origins. Set this in Render as an environment variable.
+CORS_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        'CORS_ALLOWED_ORIGINS',
+        'http://localhost:5173,http://localhost:3000,http://localhost:8080,http://127.0.0.1:3000,http://127.0.0.1:8000,http://127.0.0.1:8080,http://localhost:8080',
+    ).split(',')
+    if origin.strip()
+]
 
 
 # Application definition
