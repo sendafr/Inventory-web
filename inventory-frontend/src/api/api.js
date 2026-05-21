@@ -1,7 +1,9 @@
 import axios, { toFormData } from 'axios';
 
 // Base URL for your Django backend
-const BASE_URL = 'http://localhost:8000/api';
+// ✅ GOOD: Reading from env
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const BASE_URL = API_URL;
 
 // Create axios instance
 const api = axios.create({
