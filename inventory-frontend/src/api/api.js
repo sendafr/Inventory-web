@@ -4,7 +4,7 @@ import axios, { toFormData } from 'axios';
 // ✅ GOOD: Reading from env
 // Local dev defaults to the Vite proxy path, not container localhost.
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
-const BASE_URL = API_URL;
+const BASE_URL = `${API_URL}`;
 
 // Create axios instance
 const api = axios.create({
