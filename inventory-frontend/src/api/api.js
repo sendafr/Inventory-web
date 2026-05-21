@@ -2,7 +2,8 @@ import axios, { toFormData } from 'axios';
 
 // Base URL for your Django backend
 // ✅ GOOD: Reading from env
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+// Local dev defaults to the Vite proxy path, not container localhost.
+const API_URL = import.meta.env.VITE_API_URL || "/api";
 const BASE_URL = API_URL;
 
 // Create axios instance

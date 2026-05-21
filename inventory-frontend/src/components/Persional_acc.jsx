@@ -10,7 +10,8 @@ import '../styles/Persional_acc.css';
 
 // --- Configuration ---
 // ✅ GOOD: Reading from env
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+// Local dev uses the Vite proxy path, while production uses VITE_API_URL.
+const API_URL = import.meta.env.VITE_API_URL || "/api";
 
 // --- PDF Styles ---
 const styles = StyleSheet.create({
