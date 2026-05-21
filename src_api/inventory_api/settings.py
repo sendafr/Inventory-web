@@ -164,7 +164,7 @@ def get_db_settings():
         }
     }
 
-db_settings = get_db_settings()
+DATABASES = get_db_settings()
 
 """DATABASES = {
     'default': {

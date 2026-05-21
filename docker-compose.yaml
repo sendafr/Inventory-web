@@ -49,6 +49,8 @@ services:
     container_name: business-record-app-frontend
     depends_on:
       - backend
+    environment:
+      - VITE_API_URL=http://backend:8000
     networks:
       - app-network
     restart: unless-stopped
