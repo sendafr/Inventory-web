@@ -1,9 +1,9 @@
 import axios, { toFormData } from 'axios';
 
-// Base URL for your Django backend
-// ✅ GOOD: Reading from env
-// Local dev defaults to the Vite proxy path, not container localhost.
-const API_URL = import.meta.env.VITE_API_URL || "https://backend-9dpw.onrender.com/api";
+
+// ✅ HARDCODED FOR PRODUCTION (Render)
+// Remove the fallback logic to ensure it always points to the live backend
+const API_URL = "https://backend-9dpw.onrender.com/api"; 
 const BASE_URL = `${API_URL}`;
 
 // Create axios instance
@@ -13,6 +13,8 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+// ... (Rest of your interceptors and API functions remain exactly the same) ...
 
 // JWT Interceptor - Add token to all requests
 api.interceptors.request.use(
