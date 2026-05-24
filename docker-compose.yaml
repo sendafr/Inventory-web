@@ -5,9 +5,9 @@ services:
     image: postgres:15-alpine
     container_name: fed-educ-db
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: securepassword
-      POSTGRES_DB: business_record_db
+      POSTGRES_USER: personal_acounting_db_j733_user
+      POSTGRES_PASSWORD: RsczITCDmjswPAtqs09LwgrO03WzBw23
+      POSTGRES_DB: personal_acounting_db_j733
     ports:
       - "5432:5432" # Exposes PostgreSQL on host port 543
     volumes:
