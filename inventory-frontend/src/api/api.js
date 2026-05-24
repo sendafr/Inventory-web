@@ -5,6 +5,8 @@ import axios, { toFormData } from 'axios';
 // Remove the fallback logic to ensure it always points to the live backend
 const API_URL = "https://backend-9dpw.onrender.com/api"; 
 const BASE_URL = `${API_URL}`;
+// In api.js, right after the API_URL definition
+console.log('API_URL:', API_URL); 
 
 // Create axios instance
 const api = axios.create({
