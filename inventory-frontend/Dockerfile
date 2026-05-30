@@ -29,4 +29,4 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 ENV BACKEND_URL=https://inventory-backend.onrender.com
 # The CMD must ensure VITE_API_URL is set before running sed
 # Render passes env vars to the container, so $VITE_API_URL is available here
-CMD ["/bin/sh", "-c", "envsubst '${VITE_API_URL}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "envsubst '${BACKEND_URL}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
