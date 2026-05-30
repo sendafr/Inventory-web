@@ -23,11 +23,11 @@ from django.http import JsonResponse
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('health/', lambda request: JsonResponse({'status': 'ok'})),
-    path('api/', include('records.urls')),
+    path('api/records/', include('records.urls')),
     path('api/auth/', include('users.urls')),
-    path('api/', include('persio_acc.urls')),
-    path('api/', include('to_dos.urls')),
-    path('api/', include('budgets.urls')),
+    path('api/personal_accounts/', include('persio_acc.urls')),
+    path('api/todos/', include('to_dos.urls')),
+    path('api/budgets/', include('budgets.urls')),
 ]
 
 #Serve media files in development

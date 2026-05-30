@@ -23,7 +23,7 @@ services:
 
   backend:
     build: ./src_api
-    container_name: business-record-app-src_api
+    container_name: business-record-app_backend 
     env_file:
       - .env
     environment:

@@ -27,24 +27,25 @@ SECRET_KEY = os.getenv('MY_SECRET_KEY', default='django-insecure-v+k)(_mfq4_&lmh
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
-
+"""
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
     if host.strip()
-]
+]"""
 
 CORS_ALLOW_CREDENTIALS = True
+ALLOWED_HOSTS = ['backend-9dpw.onrender.com','.onrender.com']  # Allow all hosts (not recommended for production)
 
 # Allowed frontend origins. Set this in Render as an environment variable.
-CORS_ALLOWED_ORIGINS = [
+"""CORS_ALLOWED_ORIGINS = [
     origin.strip()
     for origin in os.getenv(
         'CORS_ALLOWED_ORIGINS',
         'http://localhost:5173,http://localhost:3000,http://localhost:8080,http://127.0.0.1:3000,http://127.0.0.1:8000,http://127.0.0.1:8080,http://localhost:8080,https://frontend-u40a.onrender.com',
     ).split(',')
     if origin.strip()
-]
+]"""
 
 
 # Application definition
@@ -64,12 +65,12 @@ INSTALLED_APPS = [
     'budgets',
     'persio_acc',
     'users',
-    'corsheaders',
+    #'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
+    #"corsheaders.middleware.CorsMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
