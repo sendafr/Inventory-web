@@ -9,9 +9,9 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copy installed packages and binaries from builder
-COPY --from=builder /root/.local/ root/.local
-ENV PATH=/root/.local/bin:$PATH
-#COPY --from=builder /usr/local/bin/gunicorn /usr/local/bin/gunicorn
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+ENV PATH=/usr/local/bin:$PATH
+COPY --from=builder /usr/local/bin/gunicorn /usr/local/bin/gunicorn
 
 # Copy application code
 COPY . .
