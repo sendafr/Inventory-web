@@ -21,5 +21,5 @@ COPY . .
 ENV PORT=8000
 
 # Run with Gunicorn, binding to 0.0.0.0 and the dynamic port
-CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "3", "inventory_api.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "inventory_api.wsgi:application"]
 #CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --config gunicorn.conf --chdir /app inventory_api.wsgi:application"]
