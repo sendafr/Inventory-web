@@ -9,7 +9,7 @@ ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
 RUN echo ">>> Building with VITE_API_URL=[${VITE_API_URL}]"
 
-RUN npm run build2: Serve with Nginx
+RUN npm run build: Serve with Nginx
 FROM nginx:alpine
 
 # Install envsubst (used to replace variables in nginx.conf)
