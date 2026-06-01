@@ -1,15 +1,15 @@
 # Stage 1: Build
-FROM node:20-alpine as build
+FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
-COPY . .
+COPY .. .
 
 ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
-RUN echo "VITE_API_URL during build = [${VITE_API_URL}]"
-RUN npm run build
-# Stage 2: Serve with Nginx
+RUN echo ">>> Building with VITE_API_URL=[${VITE_API_URL}]"
+
+RUN npm run build2: Serve with Nginx
 FROM nginx:alpine
 
 # Install envsubst (used to replace variables in nginx.conf)
