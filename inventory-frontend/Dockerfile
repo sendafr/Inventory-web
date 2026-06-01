@@ -4,9 +4,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-#Ensure the env variable is set during build time
+
 ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
+RUN echo "VITE_API_URL during build = [$VITE_API_URL]"
 RUN npm run build
 
 # Stage 2: Serve with Nginx
