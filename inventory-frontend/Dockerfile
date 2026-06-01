@@ -1,32 +1,19 @@
-# Stage 1: Build
 FROM node:18-alpine AS builder
 WORKDIR /app
+
+# Copy package files FIRST
 COPY package*.json ./
-RUN npm ci
-COPY .. .
+RUN npm ci --legacy-peer-deps
 
-ARG VITE_API_URL
-ENV VITE_API_URL=${VITE_API_URL}
-RUN echo ">>> Building with VITE_API_URL=[${VITE_API_URL}]"
+# Then copy all code including package.json
+COPY . .
 
-RUN npm run build: Serve with Nginx
+ENV NODE_OPTIONS=--openssl-legacy-provider
+ENV VITE_API_URL=/api
+RUN npm run build
+
 FROM nginx:alpine
-
-# Install envsubst (used to replace variables in nginx.conf)
-RUN apk add --no-cache gettext
-
-# Copy custom nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf.template
-
-# Copy built assets
-#COPY --from=build /app/dist /usr/share/nginx/html
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-
-# Expose port (Render handles the mapping)
-#EXPOSE 80
-#only BACKEND_URL needsenvsubst at runtime for nginx proxy
-ENV BACKEND_URL=${BACKEND_URL}
-# The CMD must ensure VITE_API_URL is set before running sed
-# Render passes env vars to the container, so $VITE_API_URL is available here
-CMD ["/bin/sh", "-c", "envsubst '${BACKEND_URL}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+COPY default.conf.template /etc/nginx/templates/default.conf.template
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
