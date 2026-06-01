@@ -19,8 +19,8 @@ RUN apk add --no-cache gettext
 COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 
 # Copy built assets
-#COPY --from=build /app/dist /usr/share/nginx/html
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
+#COPY --from=builder /app/dist /usr/share/nginx/html
 
 
 # Expose port (Render handles the mapping)
