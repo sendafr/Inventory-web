@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]"""
 
-CORS_ALLOW_CREDENTIALS = True
+
 ALLOWED_HOSTS = ['backend-9dpw.onrender.com','.onrender.com']  # Allow all hosts (not recommended for production)
 
 # Allowed frontend origins. Set this in Render as an environment variable.
@@ -46,6 +46,39 @@ ALLOWED_HOSTS = ['backend-9dpw.onrender.com','.onrender.com']  # Allow all hosts
     ).split(',')
     if origin.strip()
 ]"""
+
+from django.conf import settings
+
+# Allow your frontend domain
+CORS_ALLOWED_ORIGINS = [
+    "https://frontend-web-ix27.onrender.com",
+    "http://localhost:5173",  # For local dev
+]
+
+# If you need to allow cookies/auth headers (recommended for DRF auth)
+CORS_ALLOW_CREDENTIALS = True
+
+# Optional: Allow all methods and headers if you are unsure
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 
 # Application definition
@@ -65,12 +98,12 @@ INSTALLED_APPS = [
     'budgets',
     'persio_acc',
     'users',
-    #'corsheaders',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    #"corsheaders.middleware.CorsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
