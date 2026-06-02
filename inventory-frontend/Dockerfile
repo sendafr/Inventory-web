@@ -1,32 +1,30 @@
-# --- Stage 1E: Build ---
-# Change 'node:18' to 'node:20-alpine' or 'node:20-bookworm'
+# --- Stage 1: Build ---
 FROM node:20-alpine AS builder
 
 WORKDIR /app
-ENV VITE_API_URL=/api
-
-
 
 # Copy package files
 COPY package*.json ./
-RUN npm ci --only=production
-
-# Install dependencies
-RUN npm install
+RUN npm ci --only=production # Or just 'npm install' if you need dev deps
 
 # Copy source code
-
 COPY . .
 
+# 🛑 REMOVE THIS LINE: ENV VITE_API_URL=/api
+# We do NOT set it here. We expect it to be passed during build or set in the environment.
+
 # Build the application
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
+# NOTE: If Render passes env vars as args, they will be picked up automatically by Vite 
+# IF you are using a custom build command that passes them.
+# If Render's default build is used, it might not pass them. 
+# The safest way for Render + Docker is to ensure the variable exists in the environment 
+# when 'npm run build' runs.
 RUN npm run build
 
 # --- Stage 2: Serve with Nginx ---
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
-# If you have a custom nginx config, copy it here
+# Optional: Copy a custom nginx.conf if you need specific headers
 # COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

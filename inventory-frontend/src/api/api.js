@@ -1,26 +1,25 @@
-import axios, { toFormData } from 'axios';
+import axios from 'axios';
 
+// ✅ PRODUCTION FIX: Strictly require the environment variable
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-// ✅ HARDCODED FOR PRODUCTION (Render)
-// Remove the fallback logic to ensure it always points to the live backend
-console.log('BUILD TIME VITE_API_URL =', import.meta.env.VITE_API_URL);
-const API_URL = import.meta.env.VITE_API_URL || '/api';
-//console.log('VITE_API_URLbuilt value:',import.meta.env.VITE_API_URL);
+if (!VITE_API_URL) {
+  console.error('❌ CRITICAL ERROR: VITE_API_URL is not defined!');
+  console.error('👉 Please set VITE_API_URL in your Render Frontend Environment Variables.');
+  console.error('👉 Example: VITE_API_URL=https://your-backend-service.onrender.com');
+  // Optional: Throw an error to stop the app from running with broken config
+  // throw new Error('Missing VITE_API_URL environment variable');
+}
 
-const BASE_URL = `${API_URL}`;
-// In api.js, right after the API_URL definition
-console.log('API_URL final:', API_URL);
-console.log('BASE_URL final:', BASE_URL);
+console.log('🚀 API URL configured:', VITE_API_URL);
 
 // Create axios instance
 const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: VITE_API_URL, // Use the variable directly
   headers: {
     'Content-Type': 'application/json',
   },
 });
-
-// ... (Rest of your interceptors and API functions remain exactly the same) ...
 
 // JWT Interceptor - Add token to all requests
 api.interceptors.request.use(
@@ -60,9 +59,9 @@ api.interceptors.response.use(
           throw new Error('No refresh token available');
         }
 
-        // Refresh token
+        // Refresh token - Ensure we use the full URL here too
         const refreshResponse = await axios.post(
-          `${BASE_URL}/token/refresh/`,
+          `${VITE_API_URL}/token/refresh/`,
           { refresh: refreshToken }
         );
 
@@ -121,7 +120,7 @@ const authAPI = {
     }
 
     const response = await axios.post(
-      `${BASE_URL}/auth/token/refresh/`,
+      `${VITE_API_URL}/auth/token/refresh/`,
       { refresh: refreshToken }
     );
     localStorage.setItem('access_token', response.data.access);
@@ -265,6 +264,6 @@ export {
   authAPI,
   userAPI,
   inventoryAPI,
-  budgetAPI, // <--- Add this
-  BASE_URL,
+  budgetAPI,
+  VITE_API_URL as BASE_URL, // Export the actual URL for logging/debugging if needed
 };
