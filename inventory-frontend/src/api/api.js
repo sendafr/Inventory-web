@@ -5,7 +5,7 @@ import axios, { toFormData } from 'axios';
 // Remove the fallback logic to ensure it always points to the live backend
 console.log('BUILD TIME VITE_API_URL =', import.meta.env.VITE_API_URL);
 const API_URL = import.meta.env.VITE_API_URL || '/api';
-#console.log('VITE_API_URLbuilt value:',import.meta.env.VITE_API_URL);
+//console.log('VITE_API_URLbuilt value:',import.meta.env.VITE_API_URL);
 const API_URL = import.meta.env.VITE_API_URL || 'api'; 
 const BASE_URL = `${API_URL}`;
 // In api.js, right after the API_URL definition
