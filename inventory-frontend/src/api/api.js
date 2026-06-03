@@ -63,7 +63,7 @@ api.interceptors.response.use(
 
         // Refresh token - Ensure we use the full URL here too
         const refreshResponse = await axios.post(
-          `${API_BASE_URL}/token/refresh/`,
+          `${API_BASE_URL}/auth/token/refresh/`,
           { refresh: refreshToken }
         );
 
@@ -106,7 +106,7 @@ const authAPI = {
     const refreshToken = localStorage.getItem('refresh_token');
     if (refreshToken) {
       try {
-        await api.post('/aputh/logout/', { refresh: refreshToken });
+        await api.post('/auth/logout/', { refresh: refreshToken });
       } catch (error) {
         console.error('Logout failed:', error);
       }
@@ -142,12 +142,12 @@ const authAPI = {
 // User API
 const userAPI = {
   getAll: async () => {
-    const response = await api.get('/api/auth/user-list/');
+    const response = await api.get('/auth/user-list/');
     return response;
   },
 
   getById: async (id) => {
-    const response = await api.get(`/api/auth/user-list/${id}/`);
+    const response = await api.get(`/auth/user-list/${id}/`);
     return response;
   },
 
@@ -167,12 +167,12 @@ const userAPI = {
   },
 
   updateProfile: async (userData) => {
-    const response = await api.put('/api/auth/profile/', userData);
+    const response = await api.put('/auth/profile/', userData);
     return response;
   },
 
   deleteAccount: async () => {
-    const response = await api.delete('/api/auth/profile/');
+    const response = await api.delete('/auth/profile/');
     return response;
   },
 };
@@ -181,9 +181,9 @@ const userAPI = {
 const inventoryAPI = {
   getAll: async (filters = {}) => {
     if (typeof filters === 'string') {
-      return api.get(`/api/records/item_list/?${filters}`);
+      return api.get(`/records/item_list/?${filters}`);
     }
-    return api.get('/api/records/item_list/', { params: filters });
+    return api.get('/records/item_list/', { params: filters });
   },
 
   getById: async (id) => {
@@ -197,7 +197,7 @@ const inventoryAPI = {
   },
 
   updateItem: async (id, itemData) => {
-    const response = await api.put(`/api/records/item_detail/${id}/`, itemData);
+    const response = await api.put(`/records/item_detail/${id}/`, itemData);
     return response;
   },
 
@@ -219,7 +219,7 @@ const inventoryAPI = {
 const budgetAPI = {
   // Budget Endpoints
   getBudgets: async () => {
-    const response = await api.get('/api/budgets/budget_list/');
+    const response = await api.get('/budgets/budget_list/');
     return response.data;
   },
 
