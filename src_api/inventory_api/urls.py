@@ -25,8 +25,8 @@ urlpatterns = [
     path('health/', lambda request: JsonResponse({'status': 'ok'})),
     path('api/records/', include('records.urls')),
     path('api/auth/', include('users.urls')),
-    path('api/personal_accounts/', include('persio_acc.urls')),
-    path('api/todos/', include('to_dos.urls')),
+    path('api/personal_accounts/', include('personal_accounts.urls')),
+    path('api/todos/', include('todos.urls')),
     path('api/budgets/', include('budgets.urls')),
 ]
 
