@@ -89,7 +89,7 @@ api.interceptors.response.use(
 // Auth API
 const authAPI = {
   login: async (username, password) => {
-    const response = await api.post('/auth/login/', {
+    const response = await api.post('/api/auth/login/', {
       username,
       password,
     });
@@ -97,7 +97,7 @@ const authAPI = {
   },
 
   register: async (userData) => {
-    const response = await api.post('/auth/register/', userData);
+    const response = await api.post('/api/auth/register/', userData);
     return response;
   },
 
@@ -105,7 +105,7 @@ const authAPI = {
     const refreshToken = localStorage.getItem('refresh_token');
     if (refreshToken) {
       try {
-        await api.post('/auth/logout/', { refresh: refreshToken });
+        await api.post('/api/auth/logout/', { refresh: refreshToken });
       } catch (error) {
         console.error('Logout failed:', error);
       }
