@@ -55,7 +55,7 @@ const ChartModal = ({ open, onClose, data }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-11/12 max-w-4xl">
+      <div className="bg-white rounded-lg p-6 w-11/12 max-w-4xl" style={{ minWidth: 320 }}>
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Chart</h3>
           <div className="flex gap-2">
@@ -70,9 +70,8 @@ const ChartModal = ({ open, onClose, data }) => {
             <button onClick={onClose} className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Close</button>
           </div>
         </div>
-        <div style={{ width: '100%', height: 400 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            {chartType === 'bar' ? (
+        <div style={{ width: '100%', height: 400, minHeight: 400, minWidth: 0 }}>
+          <ResponsiveContainer width="100%" height="100%">            {chartType === 'bar' ? (
               <BarChart data={data}>
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -150,7 +149,7 @@ export default function ExcelSheet({ initialData = [], onRowsChange }) {
             onBlur={(e) => {
               const value = e.target.value
               setFormulaBarValue(value)
-              if (hfReady && typeof SHEET_ID === 'number') {
+              if (hfReady && SHEET_ID != null) {
                 if (value.startsWith('=')) {
                   hf.setCellContents(addr, [[value]])
                 } else {
@@ -171,12 +170,12 @@ export default function ExcelSheet({ initialData = [], onRowsChange }) {
       }
     }))
     setColumns(initialCols)
-    setHfReady(isInitialized && typeof SHEET_ID === 'number')
+    setHfReady(isInitialized && SHEET_ID != null)
   }, [cellMeta])
 
   // Sync with parent initialData
   useEffect(() => {
-    if (!hfReady || typeof SHEET_ID !== 'number') return
+    if (!hfReady || SHEET_ID == null) return
 
     const rowCount = Math.max(initialData.length, DEFAULT_ROWS)
     const newRows = Array.from({ length: rowCount }, (_, i) => {
