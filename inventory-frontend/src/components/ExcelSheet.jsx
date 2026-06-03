@@ -71,8 +71,8 @@ const ChartModal = ({ open, onClose, data }) => {
           </div>
         </div>
         <div style={{ width: '100%', height: 400 }}>
-          <ResponsiveContainer>
-            {chartType === 'bar'? (
+          <ResponsiveContainer width="100%" height="100%">
+            {chartType === 'bar' ? (
               <BarChart data={data}>
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -107,27 +107,7 @@ export default function ExcelSheet({ initialData = [], onRowsChange }) {
   const [chartData, setChartData] = useState([])
   const fileInputRef = useRef(null)
 
-  // Inside ExcelSheet component
-
-// 1. Fix the column initialization effect
-
-
-  // Only run this if columns haven't been set yet or if hfReady changes
-  if (columns.length === 0) {
-    const initialCols = BASE_HEADERS.map((name, i) => ({
-      key: colIndexToLetter(i),
-      name,
-      width: 130,
-      editable: true,
-      // ... rest of column definition
-    }));
-    setColumns(initialCols);
-    setHfReady(true);
- 
-  }
-
-// ... rest of the component
-  // Init columns once
+  // Init columns once and ensure HyperFormula is only marked ready when a valid sheet exists.
   useEffect(() => {
     const initialCols = BASE_HEADERS.map((name, i) => ({
       key: colIndexToLetter(i),
@@ -137,7 +117,7 @@ export default function ExcelSheet({ initialData = [], onRowsChange }) {
       colSpan: (args) => {
         if (!args.row) return 1
         const meta = cellMeta[`${args.row.id}-${i}`]
-        return meta?.hidden? 0 : meta?.colSpan || 1
+        return meta?.hidden ? 0 : meta?.colSpan || 1
       },
       cellStyle: (args) => {
         if (!args.row) return {}
@@ -145,12 +125,12 @@ export default function ExcelSheet({ initialData = [], onRowsChange }) {
         return meta?.style || {}
       },
       renderCell: ({ row, rowIdx }) => {
-        if (!row ||!hfReady) return row?.[colIndexToLetter(i)] || ''
+        if (!row || !hfReady) return row?.[colIndexToLetter(i)] || ''
         const addr = getHfCoords(rowIdx, i)
         try {
           const detailed = hf.getCellValueDetailed(addr)
           if (detailed?.error) return <span className="text-red-500">#ERROR</span>
-          return hf.getCellValue(addr)?? ''
+          return hf.getCellValue(addr) ?? ''
         } catch {
           return row[colIndexToLetter(i)] || ''
         }
@@ -159,8 +139,8 @@ export default function ExcelSheet({ initialData = [], onRowsChange }) {
         if (!row) return null
         const addr = getHfCoords(rowIdx, i)
         const raw = hfReady
-        ? (hf.getCellFormula(addr)?? hf.getCellValue(addr)?? '')
-          : row[colIndexToLetter(i)]?? ''
+          ? hf.getCellFormula(addr) ?? hf.getCellValue(addr) ?? ''
+          : row[colIndexToLetter(i)] ?? ''
 
         return (
           <input
@@ -170,15 +150,15 @@ export default function ExcelSheet({ initialData = [], onRowsChange }) {
             onBlur={(e) => {
               const value = e.target.value
               setFormulaBarValue(value)
-              if (hfReady) {
+              if (hfReady && typeof SHEET_ID === 'number') {
                 if (value.startsWith('=')) {
                   hf.setCellContents(addr, [[value]])
                 } else {
                   const num = Number(value)
-                  hf.setCellContents(addr, [[value === ''? null : isNaN(num)? value : num]])
+                  hf.setCellContents(addr, [[value === '' ? null : isNaN(num) ? value : num]])
                 }
               }
-              onRowChange({...row, [colIndexToLetter(i)]: value })
+              onRowChange({ ...row, [colIndexToLetter(i)]: value })
               onClose(true)
             }}
             onKeyDown={(e) => {
@@ -192,11 +172,11 @@ export default function ExcelSheet({ initialData = [], onRowsChange }) {
     }))
     setColumns(initialCols)
     setHfReady(isInitialized && typeof SHEET_ID === 'number')
-  }, [cellMeta, hfReady])
+  }, [cellMeta])
 
   // Sync with parent initialData
   useEffect(() => {
-    if (!hfReady) return
+    if (!hfReady || typeof SHEET_ID !== 'number') return
 
     const rowCount = Math.max(initialData.length, DEFAULT_ROWS)
     const newRows = Array.from({ length: rowCount }, (_, i) => {
@@ -210,8 +190,8 @@ export default function ExcelSheet({ initialData = [], onRowsChange }) {
         E: item?.cost_price || 0,
         F: item?.selling_price || 0,
         G: item?.reorder_level || 0,
-        H: item?.is_low_stock? 'Low' : 'OK',
-        I: item?.formular || '' // NEW
+        H: item?.is_low_stock ? 'Low' : 'OK',
+        I: item?.formular || ''
       }
     })
     setRows(newRows)
