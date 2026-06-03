@@ -21,7 +21,7 @@ ENV PORT=8000
 
 # Run migrations before starting the server
 # This ensures the database schema is up to date
-RUN python manage.py migrate --noinput
+#RUN python manage.py migrate --noinput
 
 # Run with Gunicorn, binding to 0.0.0.0 and the dynamic port
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "inventory_api.wsgi:application"]
