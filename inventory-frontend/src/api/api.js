@@ -1,21 +1,22 @@
 import axios from 'axios';
 
-// ✅ PRODUCTION FIX: Strictly require the environment variable
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+// Accept either a Render backend URL or the local proxy path.
+const rawApiUrl = import.meta.env.VITE_API_URL || '/api';
+const trimmedApiUrl = rawApiUrl.replace(/\/$/, '');
+const API_BASE_URL = trimmedApiUrl.endsWith('/api')
+  ? trimmedApiUrl
+  : `${trimmedApiUrl}/api`;
 
-if (!VITE_API_URL) {
-  console.error('❌ CRITICAL ERROR: VITE_API_URL is not defined!');
-  console.error('👉 Please set VITE_API_URL in your Render Frontend Environment Variables.');
-  console.error('👉 Example: VITE_API_URL=https://your-backend-service.onrender.com');
-  // Optional: Throw an error to stop the app from running with broken config
-  // throw new Error('Missing VITE_API_URL environment variable');
+if (!import.meta.env.VITE_API_URL) {
+  console.warn('⚠️ VITE_API_URL is not defined, falling back to /api');
+  console.warn('👉 Set VITE_API_URL to your backend host or /api if using the frontend proxy.');
 }
 
-console.log('🚀 API URL configured:', VITE_API_URL);
+console.log('🚀 API URL configured:', API_BASE_URL);
 
 // Create axios instance
 const api = axios.create({
-  baseURL: VITE_API_URL, // Use the variable directly
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -61,7 +62,7 @@ api.interceptors.response.use(
 
         // Refresh token - Ensure we use the full URL here too
         const refreshResponse = await axios.post(
-          `${VITE_API_URL}/token/refresh/`,
+          `${API_BASE_URL}/token/refresh/`,
           { refresh: refreshToken }
         );
 
@@ -120,7 +121,7 @@ const authAPI = {
     }
 
     const response = await axios.post(
-      `${VITE_API_URL}/auth/token/refresh/`,
+      `${API_BASE_URL}/auth/token/refresh/`,
       { refresh: refreshToken }
     );
     localStorage.setItem('access_token', response.data.access);
@@ -265,5 +266,5 @@ export {
   userAPI,
   inventoryAPI,
   budgetAPI,
-  VITE_API_URL as BASE_URL, // Export the actual URL for logging/debugging if needed
+  API_BASE_URL as BASE_URL, // Export the actual URL for logging/debugging if needed
 };
