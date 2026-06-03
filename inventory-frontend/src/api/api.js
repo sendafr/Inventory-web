@@ -12,7 +12,8 @@ if (!import.meta.env.VITE_API_URL) {
   console.warn('👉 Set VITE_API_URL to your backend host or /api if using the frontend proxy.');
 }
 
-console.log('🚀 API URL configured:', API_BASE_URL);
+console.log('🚀 RAW VITE_API_URL:', rawApiUrl);
+console.log('🚀 API_BASE_URL:', API_BASE_URL);
 
 // Create axios instance
 const api = axios.create({
@@ -120,17 +121,16 @@ const authAPI = {
       throw new Error('No refresh token available');
     }
 
-    const response = await axios.post(
-      `${API_BASE_URL}/auth/token/refresh/`,
-      { refresh: refreshToken }
-    );
+    const response = await api.post('/api/auth/token/refresh/', {
+      refresh: refreshToken,
+    });
     localStorage.setItem('access_token', response.data.access);
     localStorage.setItem('refresh_token', response.data.refresh);
     return response;
   },
 
   changePassword: async (oldPassword, newPassword, newPassword2) => {
-    const response = await api.put('/change-password/', {
+    const response = await api.put('/api/auth/change-password/', {
       old_password: oldPassword,
       new_password: newPassword,
       new_password2: newPassword2,
@@ -142,37 +142,37 @@ const authAPI = {
 // User API
 const userAPI = {
   getAll: async () => {
-    const response = await api.get('/auth/user-list/');
+    const response = await api.get('/api/auth/user-list/');
     return response;
   },
 
   getById: async (id) => {
-    const response = await api.get(`/auth/user-list/${id}/`);
+    const response = await api.get(`/api/auth/user-list/${id}/`);
     return response;
   },
 
   updateUser: async (id, userData) => {
-    const response = await api.put(`/auth/user-list/${id}/`, userData);
+    const response = await api.put(`/api/auth/user-list/${id}/`, userData);
     return response;
   },
 
   deleteUser: async (id) => {
-    const response = await api.delete(`/auth/user-list/${id}/`);
+    const response = await api.delete(`/api/auth/user-list/${id}/`);
     return response;
   },
 
   getProfile: async () => {
-    const response = await api.get('/auth/profile/');
+    const response = await api.get('/api/auth/profile/');
     return response;
   },
 
   updateProfile: async (userData) => {
-    const response = await api.put('/auth/profile/', userData);
+    const response = await api.put('/api/auth/profile/', userData);
     return response;
   },
 
   deleteAccount: async () => {
-    const response = await api.delete('/auth/profile/');
+    const response = await api.delete('/api/auth/profile/');
     return response;
   },
 };
@@ -181,36 +181,36 @@ const userAPI = {
 const inventoryAPI = {
   getAll: async (filters = {}) => {
     if (typeof filters === 'string') {
-      return api.get(`/item_list/?${filters}`);
+      return api.get(`/api/records/item_list/?${filters}`);
     }
-    return api.get('/item_list/', { params: filters });
+    return api.get('/api/records/item_list/', { params: filters });
   },
 
   getById: async (id) => {
-    const response = await api.get(`/item_detail/${id}/`);
+    const response = await api.get(`/api/records/item_detail/${id}/`);
     return response;
   },
 
   createItem: async (itemData) => {
-    const response = await api.post('/item_list/', itemData);
+    const response = await api.post('/api/records/item_list/', itemData);
     return response;
   },
 
   updateItem: async (id, itemData) => {
-    const response = await api.put(`/item_detail/${id}/`, itemData);
+    const response = await api.put(`/api/records/item_detail/${id}/`, itemData);
     return response;
   },
 
   getCategories: async () => {
-    const response = await api.get('/category_list/');
+    const response = await api.get('/api/records/category_list/');
     return response;
   },
 
   deleteItem: async (id) => {
-    const response = await api.delete(`/item_detail/${id}/`);
+    const response = await api.delete(`/api/records/item_detail/${id}/`);
     return response;
   },
-  importExcel: (formData) => api.post('/inventory_bulk_update/', formData, {
+  importExcel: (formData) => api.post('/api/records/inventory_bulk_update/', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   })
 };
@@ -219,43 +219,43 @@ const inventoryAPI = {
 const budgetAPI = {
   // Budget Endpoints
   getBudgets: async () => {
-    const response = await api.get('/budget_list/');
+    const response = await api.get('/api/budgets/budget_list/');
     return response.data;
   },
 
   createBudget: async (budgetData) => {
-    const response = await api.post('/budget_create/', budgetData);
+    const response = await api.post('/api/budgets/budget_create/', budgetData);
     return response.data;
   },
 
   updateBudget: async (id, budgetData) => {
-    const response = await api.put(`/budget_detail/${id}/`, budgetData);
+    const response = await api.put(`/api/budgets/budget_detail/${id}/`, budgetData);
     return response.data;
   },
 
   deleteBudget: async (id) => {
-    const response = await api.delete(`/budget_detail/${id}/`);
+    const response = await api.delete(`/api/budgets/budget_detail/${id}/`);
     return response.data;
   },
 
   // Todo Endpoints
   getTodos: async () => {
-    const response = await api.get('/get_todo/');
+    const response = await api.get('/api/to_dos/get_todo/');
     return response.data;
   },
 
   createTodo: async (todoData) => {
-    const response = await api.post('/todo_create/', todoData);
+    const response = await api.post('/api/to_dos/todo_create/', todoData);
     return response.data;
   },
 
   updateTodo: async (id, todoData) => {
-    const response = await api.put(`/todo_detail/${id}/`, todoData);
+    const response = await api.put(`/api/to_dos/todo_detail/${id}/`, todoData);
     return response.data;
   },
 
   deleteTodo: async (id) => {
-    const response = await api.delete(`/delete_todo/${id}/`);
+    const response = await api.delete(`/api/to_dos/delete_todo/${id}/`);
     return response.data;
   },
 };
