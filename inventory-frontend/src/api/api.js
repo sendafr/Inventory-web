@@ -90,7 +90,7 @@ api.interceptors.response.use(
 // Auth API
 const authAPI = {
   login: async (username, password) => {
-    const response = await api.post('/api/auth/login/', {
+    const response = await api.post('/auth/login/', {
       username,
       password,
     });
@@ -98,7 +98,7 @@ const authAPI = {
   },
 
   register: async (userData) => {
-    const response = await api.post('/api/auth/register/', userData);
+    const response = await api.post('/auth/register/', userData);
     return response;
   },
 
@@ -121,7 +121,7 @@ const authAPI = {
       throw new Error('No refresh token available');
     }
 
-    const response = await api.post('/api/auth/token/refresh/', {
+    const response = await api.post('/auth/token/refresh/', {
       refresh: refreshToken,
     });
     localStorage.setItem('access_token', response.data.access);
@@ -130,7 +130,7 @@ const authAPI = {
   },
 
   changePassword: async (oldPassword, newPassword, newPassword2) => {
-    const response = await api.put('/api/auth/change-password/', {
+    const response = await api.put('/auth/change-password/', {
       old_password: oldPassword,
       new_password: newPassword,
       new_password2: newPassword2,
@@ -152,17 +152,17 @@ const userAPI = {
   },
 
   updateUser: async (id, userData) => {
-    const response = await api.put(`/api/auth/user-list/${id}/`, userData);
+    const response = await api.put(`/auth/user-list/${id}/`, userData);
     return response;
   },
 
   deleteUser: async (id) => {
-    const response = await api.delete(`/api/auth/user-list/${id}/`);
+    const response = await api.delete(`/auth/user-list/${id}/`);
     return response;
   },
 
   getProfile: async () => {
-    const response = await api.get('/api/auth/profile/');
+    const response = await api.get('/auth/profile/');
     return response;
   },
 
@@ -187,12 +187,12 @@ const inventoryAPI = {
   },
 
   getById: async (id) => {
-    const response = await api.get(`/api/records/item_detail/${id}/`);
+    const response = await api.get(`/records/item_detail/${id}/`);
     return response;
   },
 
   createItem: async (itemData) => {
-    const response = await api.post('/api/records/item_list/', itemData);
+    const response = await api.post('/records/item_list/', itemData);
     return response;
   },
 
@@ -202,15 +202,15 @@ const inventoryAPI = {
   },
 
   getCategories: async () => {
-    const response = await api.get('/api/records/category_list/');
+    const response = await api.get('/records/category_list/');
     return response;
   },
 
   deleteItem: async (id) => {
-    const response = await api.delete(`/api/records/item_detail/${id}/`);
+    const response = await api.delete(`/records/item_detail/${id}/`);
     return response;
   },
-  importExcel: (formData) => api.post('/api/records/inventory_bulk_update/', formData, {
+  importExcel: (formData) => api.post('/records/inventory_bulk_update/', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   })
 };
@@ -224,38 +224,38 @@ const budgetAPI = {
   },
 
   createBudget: async (budgetData) => {
-    const response = await api.post('/api/budgets/budget_create/', budgetData);
+    const response = await api.post('/budgets/budget_create/', budgetData);
     return response.data;
   },
 
   updateBudget: async (id, budgetData) => {
-    const response = await api.put(`/api/budgets/budget_detail/${id}/`, budgetData);
+    const response = await api.put(`/budgets/budget_detail/${id}/`, budgetData);
     return response.data;
   },
 
   deleteBudget: async (id) => {
-    const response = await api.delete(`/api/budgets/budget_detail/${id}/`);
+    const response = await api.delete(`/budgets/budget_detail/${id}/`);
     return response.data;
   },
 
   // Todo Endpoints
   getTodos: async () => {
-    const response = await api.get('/api/to_dos/get_todo/');
+    const response = await api.get('/to_dos/get_todo/');
     return response.data;
   },
 
   createTodo: async (todoData) => {
-    const response = await api.post('/api/to_dos/todo_create/', todoData);
+    const response = await api.post('/to_dos/todo_create/', todoData);
     return response.data;
   },
 
   updateTodo: async (id, todoData) => {
-    const response = await api.put(`/api/to_dos/todo_detail/${id}/`, todoData);
+    const response = await api.put(`/to_dos/todo_detail/${id}/`, todoData);
     return response.data;
   },
 
   deleteTodo: async (id) => {
-    const response = await api.delete(`/api/to_dos/delete_todo/${id}/`);
+    const response = await api.delete(`/to_dos/delete_todo/${id}/`);
     return response.data;
   },
 };
