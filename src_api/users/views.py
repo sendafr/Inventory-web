@@ -3,17 +3,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
-#from django.contrib.auth.models import User
-#from django.db.models import Q
-#from.serializers import UserRegisterSerializer, UserSerializer
-#from records.serializers import CategorySerializer, InventoryItemSerializer
-
-#from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .serializers import RegisterSerializer, UserSerializer, UserDetailSerializer, ChangePasswordSerializer
 from inventory_api.settings import AUTH_USER_MODEL
-import traceback
 import logging
 
 logger = logging.getLogger(__name__)
@@ -28,20 +22,42 @@ User = AUTH_USER_MODEL
 def register_view(request):
     serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
-        user = serializer.save()
-        # Auto-generate tokens on registration
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'message': 'Account created successfully.',
-            'data': {
-                'user': UserSerializer(user).data,
-                'tokens': {
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token),
+        try:
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'message': 'Account created successfully.',
+                'data': {
+                    'user': UserSerializer(user).data,
+                    'tokens': {
+                        'refresh': str(refresh),
+                        'access': str(refresh.access_token),
+                    }
                 }
-            }
-        }, status=status.HTTP_201_CREATED)
+            }, status=status.HTTP_201_CREATED)
+        except Exception as exc:
+            logger.error('Registration error', exc_info=True)
+            return Response(
+                {'detail': str(exc)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# ─── Login ─────────────────────────────────────────────────────────────────────
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login_view(request):
+    serializer = TokenObtainPairSerializer(data=request.data)
+    try:
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+    except Exception as exc:
+        logger.error('Login error', exc_info=True)
+        return Response(
+            {'detail': str(exc)},
+            status=status.HTTP_400_BAD_REQUEST if hasattr(exc, 'status_code') and exc.status_code == 401 else status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 
 # ─── Logout ────────────────────────────────────────────────────────────────────

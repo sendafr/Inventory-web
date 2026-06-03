@@ -23,5 +23,5 @@ ENV PORT=8000
 # This ensures the database schema is up to date
 #RUN python manage.py migrate --noinput
 
-# Run with Gunicorn, binding to 0.0.0.0 and the dynamic port
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "inventory_api.wsgi:application"]
+# Run migrations before starting Gunicorn, then launch the app
+CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn --bind 0.0.0.0:8000 --workers 3 inventory_api.wsgi:application"]
