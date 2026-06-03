@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/records/', include('records.urls')),
     path('api/auth/', include('users.urls')),
     path('api/persio_acc/', include('persio_acc.urls')),
-    path('api/todos/', include('todos.urls')),
+    path('api/to_dos/', include('to_dos.urls')),
     path('api/budgets/', include('budgets.urls')),
 ]
 
