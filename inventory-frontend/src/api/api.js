@@ -106,7 +106,7 @@ const authAPI = {
     const refreshToken = localStorage.getItem('refresh_token');
     if (refreshToken) {
       try {
-        await api.post('/api/auth/logout/', { refresh: refreshToken });
+        await api.post('/aputh/logout/', { refresh: refreshToken });
       } catch (error) {
         console.error('Logout failed:', error);
       }
