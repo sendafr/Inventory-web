@@ -9,9 +9,12 @@ import {
 import '../styles/Persional_acc.css';
 
 // --- Configuration ---
-// ✅ GOOD: Reading from env
-// Local dev uses the Vite proxy path, while production uses VITE_API_URL.
-const API_URL = import.meta.env.VITE_API_URL || "/api";
+// Build a consistent base URL for the persio_acc endpoints.
+const rawApiUrl = import.meta.env.VITE_API_URL || '/api';
+const trimmedApiUrl = rawApiUrl.replace(/\/$/, '');
+const PERSIO_API_BASE = trimmedApiUrl.endsWith('/api')
+  ? `${trimmedApiUrl}/persio_acc`
+  : `${trimmedApiUrl}/api/persio_acc`;
 
 // --- PDF Styles ---
 const styles = StyleSheet.create({
@@ -125,7 +128,7 @@ function Persional_acc() {
   const fetchTransactions = async () => {
     setDataLoading(true);
     try {
-      const response = await fetch(`${API_URL}/transactions/`);
+      const response = await fetch(`${PERSIO_API_BASE}/transactions/`);
       if (!response.ok) throw new Error('Failed to fetch');
       const data = await response.json();
       setTransactions(data);
@@ -141,7 +144,7 @@ function Persional_acc() {
     if (!formData.amount || !formData.description) return;
 
     try {
-      const response = await fetch(`${API_URL}/transactions/create/`, {
+      const response = await fetch(`${PERSIO_API_BASE}/transactions/create/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
